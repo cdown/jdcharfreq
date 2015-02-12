@@ -4,10 +4,7 @@ import codecs
 from collections import namedtuple
 
 
-Hanzi = namedtuple(
-    'Hanzi',
-    ['serial', 'hanzi', 'freq', 'freq_percent', 'pinyin', 'english'],
-)
+Hanzi = namedtuple('Hanzi', 'hanzi freq freq_percent pinyin english')
 
 
 def parse_pinyin_field(pinyin):
@@ -34,12 +31,9 @@ def parse_frequency_list(filename):
         if not line or not line[0].isdigit():
             continue
 
-        serial, hanzi, freq, freq_percent, pinyin, english = line.split('\t')
+        _, hanzi, freq, freq_percent, pinyin, english = line.split('\t')
 
-        serial = int(serial)
-        freq = int(freq)
-        freq_percent = float(freq_percent)
         pinyin = parse_pinyin_field(pinyin)
         english = parse_english_field(english)
 
-        yield Hanzi(serial, hanzi, freq, freq_percent, pinyin, english)
+        yield Hanzi(hanzi, int(freq), float(freq_percent), pinyin, english)

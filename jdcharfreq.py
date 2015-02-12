@@ -26,12 +26,10 @@ def parse_frequency_list(filename):
     freq_f = codecs.open(filename, 'r', encoding='gb2312', errors='replace')
 
     for line in freq_f:
-        if not line or not line[0].isdigit():
-            continue
+        if line and line[0].isdigit():
+            _, hanzi, freq, freq_percent, pinyin, english = line.split('\t')
 
-        _, hanzi, freq, freq_percent, pinyin, english = line.split('\t')
-
-        pinyin = parse_pinyin_field(pinyin)
-        english = parse_english_field(english)
-
-        yield Hanzi(hanzi, int(freq), float(freq_percent), pinyin, english)
+            yield Hanzi(
+                hanzi, int(freq), float(freq_percent),
+                parse_pinyin_field(pinyin), parse_english_field(english),
+            )

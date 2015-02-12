@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import codecs
-import sys
 from collections import namedtuple
 
 

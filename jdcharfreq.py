@@ -8,8 +8,6 @@ Hanzi = namedtuple('Hanzi', 'hanzi freq freq_percent pinyin english')
 
 
 def parse_pinyin_field(pinyin):
-    # Some entries with 'v' as the vowel also have 'u:' listed. These should
-    # all be unified to 'v'.
     pinyin = pinyin.replace('u:', 'v')
     pinyin = pinyin.split('/')
     return set(pinyin)

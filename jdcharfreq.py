@@ -5,7 +5,7 @@ import csv
 from collections import namedtuple
 
 
-fields = ['serial', 'hanzi', 'freq', 'freq_percent', 'pinyin', 'english']
+fields = ['serial', 'hanzi', 'freq', 'cum_freq_percent', 'pinyin', 'english']
 Hanzi = namedtuple('Hanzi', fields)
 
 
@@ -26,7 +26,7 @@ def parse_frequency_list(filename):
     for row in csv.DictReader(freq_f_filt, delimiter='\t', fieldnames=fields):
         yield Hanzi(
             int(row['serial']), row['hanzi'], int(row['freq']),
-            float(row['freq_percent']), parse_pinyin_field(row['pinyin']),
+            float(row['cum_freq_percent']), parse_pinyin_field(row['pinyin']),
             parse_english_field(row['english']),
         )
 

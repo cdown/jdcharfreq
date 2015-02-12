@@ -5,7 +5,8 @@ import csv
 from collections import namedtuple
 
 
-Hanzi = namedtuple('Hanzi', 'hanzi freq freq_percent pinyin english')
+fields = ['serial', 'hanzi', 'freq', 'freq_percent', 'pinyin', 'english']
+Hanzi = namedtuple('Hanzi', fields)
 
 
 def parse_pinyin_field(pinyin):
@@ -20,13 +21,13 @@ def parse_english_field(english):
 
 def parse_frequency_list(filename):
     freq_f = codecs.open(filename, 'r', encoding='gb2312', errors='replace')
+    freq_f_filt = (line for line in freq_f if line and line[0].isdigit())
 
-    for row in csv.reader(freq_f, delimiter='\t'):
-        if row and row[0].isdigit():
-            _, hanzi, freq, freq_percent, pinyin, english = row
-            yield Hanzi(
-                hanzi, int(freq), float(freq_percent),
-                parse_pinyin_field(pinyin), parse_english_field(english),
-            )
+    for row in csv.DictReader(freq_f_filt, delimiter='\t', fieldnames=fields):
+        yield Hanzi(
+            int(row['serial']), row['hanzi'], int(row['freq']),
+            float(row['freq_percent']), parse_pinyin_field(row['pinyin']),
+            parse_english_field(row['english']),
+        )
 
     freq_f.close()

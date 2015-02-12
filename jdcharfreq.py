@@ -33,3 +33,5 @@ def parse_frequency_list(filename):
                 hanzi, int(freq), float(freq_percent),
                 parse_pinyin_field(pinyin), parse_english_field(english),
             )
+
+    freq_f.close()

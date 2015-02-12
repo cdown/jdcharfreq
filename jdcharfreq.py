@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import codecs
+import csv
 from collections import namedtuple
 
 
@@ -20,9 +21,9 @@ def parse_english_field(english):
 def parse_frequency_list(filename):
     freq_f = codecs.open(filename, 'r', encoding='gb2312', errors='replace')
 
-    for line in freq_f:
-        if line and line[0].isdigit():
-            _, hanzi, freq, freq_percent, pinyin, english = line.split('\t')
+    for row in csv.reader(freq_f, delimiter='\t'):
+        if row and row[0].isdigit():
+            _, hanzi, freq, freq_percent, pinyin, english = row
             yield Hanzi(
                 hanzi, int(freq), float(freq_percent),
                 parse_pinyin_field(pinyin), parse_english_field(english),
